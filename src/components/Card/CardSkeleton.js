@@ -4,10 +4,10 @@ import Skeleton from "react-loading-skeleton";
 function CardSkeleton() {
   return (
     <>
-      <Skeleton className="card-header" />
+      <Skeleton height={250} />
       <div className="card-body">
-        <Skeleton className="card-body-item left" />
-        <Skeleton className="card-body-item right" />
+        <Skeleton width={400} height={250} />
+        <Skeleton width={400} height={250} />
       </div>
     </>
   );
