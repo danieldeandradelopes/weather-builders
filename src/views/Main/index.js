@@ -12,6 +12,7 @@ function App() {
   const [coords, setCoords] = useState(null);
   const [weatherData, setWeatherData] = useState(null);
   const [openAlert, setOpenAlert] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getCoordinates();
@@ -32,6 +33,7 @@ function App() {
   }
 
   async function handleRequestToApi(latitude, longitude) {
+    setLoading(true);
     try {
       setOpenAlert(false);
       const { data } = await weatherAPI.get(`weather?lat=${latitude}&lon=${longitude}&appid=${process.env.REACT_APP_WEATHER_KEY}&units=metric `);
@@ -55,6 +57,7 @@ function App() {
     } catch (error) {
       setOpenAlert(true);
     }
+    setLoading(false);
   }
 
   async function handleUpdateWeather() {
@@ -65,7 +68,7 @@ function App() {
   return (
     <div className="app">
       <Header />
-      {!weatherData && <Loading />}
+      {loading && <Loading />}
       <div className="container container-template-columns">
         <Controls handleUpdateWeather={handleUpdateWeather} />
         <Card weatherData={weatherData} />
