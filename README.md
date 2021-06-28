@@ -17,9 +17,13 @@ You will also see any lint errors in the console.
 
 
 ## This is a print of project
-![](https://i.imgur.com/jXMLwCq.png)
+![](https://i.imgur.com/5tmKxZm.png)
 
-## Alert
+
+## Demo
+You can see a demo in https://buildersweather.netlify.app/
+
+## Important
 
 As this project is a test, I leave a file `.env` commit (I know, this is not best practice).
 
