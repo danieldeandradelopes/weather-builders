@@ -1,12 +1,12 @@
-import "./App.css";
+import "./styles.css";
 import { useEffect, useState } from "react";
-import weatherAPI from "./services/weather";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Card from "./components/Card";
-import Loading from "./components/Loading";
-import Alert from "./components/Alert";
-import Controls from "./components/Controls";
+import weatherAPI from "../../services/weather";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
+import Card from "../../components/Card";
+import Loading from "../../components/Loading";
+import Alert from "../../components/Alert";
+import Controls from "../../components/Controls";
 
 function App() {
   const [coords, setCoords] = useState(null);
@@ -68,7 +68,7 @@ function App() {
       {!weatherData && <Loading />}
       <div className="container container-template-columns">
         <Controls handleUpdateWeather={handleUpdateWeather} />
-        {weatherData ? <Card weatherData={weatherData} /> : <div />}
+        <Card weatherData={weatherData} />
       </div>
       <Footer />
       <Alert title="Falha ao carregar clima!" type="error" open={openAlert} />
