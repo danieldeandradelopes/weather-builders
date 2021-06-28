@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-function Item({ title = "", value = "" }) {
+function Item({ title, value }) {
   return (
     <div>
       <strong>
