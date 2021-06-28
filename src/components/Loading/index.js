@@ -5,11 +5,11 @@ function Loading() {
   return (
     <div className="container-loading">
       <Loader
-        type="Puff"
-        color="#00BFFF"
+        type="Oval"
+        color="#2B244D"
         height={100}
         width={100}
-        timeout={4000} // 3 secs
+        timeout={4000}
       />
     </div>
   );
