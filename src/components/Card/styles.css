@@ -67,7 +67,7 @@
 .right {   
     border-bottom-right-radius: 14px;
     align-items: center;
-    background-color: #edeaea;
+    background-image: linear-gradient(to top right, #f37bbb, #5b5ff5);
 }
 
 .right img {
