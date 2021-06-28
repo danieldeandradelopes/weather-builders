@@ -1,10 +1,17 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import weatherAPI from "./services/weather";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Card from "./components/Card";
+import Loading from "./components/Loading";
+import Alert from "./components/Alert";
+import Controls from "./components/Controls";
 
 function App() {
   const [coords, setCoords] = useState(null);
-  const [weather, setWeather] = useState(null);
+  const [weatherData, setWeatherData] = useState(null);
+  const [openAlert, setOpenAlert] = useState(false);
 
   useEffect(() => {
     getCoordinates();
@@ -25,24 +32,46 @@ function App() {
   }
 
   async function handleRequestToApi(latitude, longitude) {
-    const { data } = await weatherAPI.get(`weather?lat=${latitude}&lon=${longitude}&appid=${process.env.REACT_APP_WEATHER_KEY}`);
-    setWeather(data);
+    try {
+      setOpenAlert(false);
+      const { data } = await weatherAPI.get(`weather?lat=${latitude}&lon=${longitude}&appid=${process.env.REACT_APP_WEATHER_KEY}&units=metric `);
+      const { name, weather, main } = data;
+      const { main: mainWeather, description, icon } = weather[0];
+      const {
+        temp, temp_min: tempMin, temp_max: tempMax, humidity,
+      } = main;
+
+      const weatherProperties = {
+        region: name,
+        weatherTitle: mainWeather,
+        weatherDescription: description,
+        weatherIcon: icon,
+        temp,
+        tempMin,
+        tempMax,
+        humidity,
+      };
+      setWeatherData(weatherProperties);
+    } catch (error) {
+      setOpenAlert(true);
+    }
   }
 
   async function handleUpdateWeather() {
-    setWeather("");
+    setWeatherData(null);
     getCoordinates();
   }
 
   return (
-    <div className="App">
-      <h1>Weather Now</h1>
-      <div>
-        {weather && weather.weather[0].main}
+    <div className="app">
+      <Header />
+      {!weatherData && <Loading />}
+      <div className="container container-template-columns">
+        <Controls handleUpdateWeather={handleUpdateWeather} />
+        {weatherData ? <Card weatherData={weatherData} /> : <div />}
       </div>
-      <button onClick={() => handleUpdateWeather()}>
-        Test
-      </button>
+      <Footer />
+      <Alert title="Falha ao carregar clima!" type="error" open={openAlert} />
     </div>
   );
 }
