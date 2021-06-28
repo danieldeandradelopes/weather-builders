@@ -13,6 +13,7 @@ function App() {
   const [weatherData, setWeatherData] = useState(null);
   const [openAlert, setOpenAlert] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [configsAlert, setConfigsAlert] = useState({ title: "", type: "error" });
 
   useEffect(() => {
     getCoordinates();
@@ -26,10 +27,19 @@ function App() {
   }, [coords]);
 
   function getCoordinates() {
+    navigator.permissions.query({ name: "geolocation" }).then((result) => {
+      if (result.state === "denied") {
+        setConfigsAlert({ title: "Você precisa da permissão de localização!", type: "error" });
+        setOpenAlert(true);
+      }
+    });
+
     navigator.geolocation.getCurrentPosition((localization) => {
       const { coords: { latitude, longitude } } = localization;
       setCoords({ latitude, longitude });
     });
+
+    setOpenAlert(false);
   }
 
   async function handleRequestToApi(latitude, longitude) {
@@ -55,8 +65,10 @@ function App() {
       };
       setWeatherData(weatherProperties);
     } catch (error) {
+      setConfigsAlert({ title: "Falha ao carregar o clima!", type: "error" });
       setOpenAlert(true);
     }
+    setOpenAlert(false);
     setLoading(false);
   }
 
@@ -74,7 +86,7 @@ function App() {
         <Card weatherData={weatherData} />
       </div>
       <Footer />
-      <Alert title="Falha ao carregar clima!" type="error" open={openAlert} />
+      <Alert title={configsAlert.title} type={configsAlert.type} open={openAlert} />
     </div>
   );
 }
